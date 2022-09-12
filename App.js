@@ -1,14 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import shuffle from "./utils/shuffle"
 
-const shuffle = function (o) {
-  for (
-    var j, x, i = o.length;
-    i;
-    j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x
-  );
-  return o;
-};
 const values = shuffle([...Array(8).keys()].concat([...Array(8).keys()]));
 
 export default function App() {
