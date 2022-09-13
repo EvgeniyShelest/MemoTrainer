@@ -52,7 +52,11 @@ export default function App() {
       </View>
       <View style={styles.row}>
         {[...values.keys()].map((index) => (
-          <TouchableOpacity key={index} onPress={() => handleItemPress(index)}>
+          <TouchableOpacity
+            disabled={!started}
+            key={index}
+            onPress={() => handleItemPress(index)}
+          >
             <View
               style={[
                 styles.cell,
