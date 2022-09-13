@@ -6,6 +6,7 @@ import shuffle from "./utils/shuffle";
 const values = shuffle([...Array(8).keys()].concat([...Array(8).keys()]));
 
 export default function App() {
+  const [started, setStarted] = useState(false);
   const [clicked, setClicked] = useState([]);
   const [solvedIndexes, setSolvedIndexes] = useState([]);
   const [prevIndex, setPrevIndex] = useState(null);
@@ -19,6 +20,9 @@ export default function App() {
     }
     setClicked((previousState) => [...previousState, index]);
   };
+  const startHandler = () => {
+    setStarted((prev) => !prev);
+  };
   const resetHandler = () => {
     setClicked([]);
     setSolvedIndexes([]);
@@ -30,7 +34,7 @@ export default function App() {
       <Text>Steps: {clicked.length}</Text>
       <Text>prevIndex: {prevIndex}</Text>
       <View style={styles.buttonRow}>
-        <Button title="Start" onPress={() => startHandler()} />
+        <Button title={started ? "Stop" : "Start"} onPress={startHandler} />
         <Button title="Reset" onPress={resetHandler} />
       </View>
       <View style={styles.row}>
@@ -42,7 +46,7 @@ export default function App() {
                 solvedIndexes.includes(index) && styles.solved,
               ]}
             >
-              <Text>{values[index]}</Text>
+              <Text style={started && styles.hide}>{values[index]}</Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -79,6 +83,9 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     margin: 2,
+  },
+  hide: {
+    color: "#fcf",
   },
   solved: {
     backgroundColor: "#aaf",
