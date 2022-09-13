@@ -41,6 +41,7 @@ export default function App() {
     setSolvedIndexes([]);
     setCounter(0);
     values = shuffle(values);
+    setStarted(false);
   };
 
   return (
