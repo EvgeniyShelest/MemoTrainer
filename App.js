@@ -3,7 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import shuffle from "./utils/shuffle";
 
-const values = shuffle([...Array(8).keys()].concat([...Array(8).keys()]));
+let values = shuffle([...Array(8).keys()].concat([...Array(8).keys()]));
 
 export default function App() {
   const [started, setStarted] = useState(false);
@@ -40,6 +40,7 @@ export default function App() {
     setClicked([]);
     setSolvedIndexes([]);
     setCounter(0);
+    values = shuffle(values);
   };
 
   return (
