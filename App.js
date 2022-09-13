@@ -9,16 +9,29 @@ export default function App() {
   const [started, setStarted] = useState(false);
   const [clicked, setClicked] = useState([]);
   const [solvedIndexes, setSolvedIndexes] = useState([]);
-  const [prevIndex, setPrevIndex] = useState(null);
+  const [counter, setCounter] = useState(0);
   const handleItemPress = (index) => {
-    if (index === prevIndex || solvedIndexes.includes(index)) return;
-    if (values[prevIndex] === values[index]) {
-      setSolvedIndexes((previousState) => [...previousState, prevIndex, index]);
-      setPrevIndex(null);
+    if (solvedIndexes.includes(index) || clicked.length === 2) return;
+    const prevIndex = clicked[0];
+    if (prevIndex !== undefined) {
+      if (index === prevIndex) return;
+      if (values[prevIndex] === values[index]) {
+        setSolvedIndexes((previousState) => [
+          ...previousState,
+          prevIndex,
+          index,
+        ]);
+        setClicked([]);
+      } else {
+        setClicked([prevIndex, index]);
+        setTimeout(() => {
+          setClicked([]);
+        }, 1000);
+      }
     } else {
-      setPrevIndex(index);
+      setClicked([index]);
     }
-    setClicked((previousState) => [...previousState, index]);
+    setCounter((prev) => prev + 1);
   };
   const startHandler = () => {
     setStarted((prev) => !prev);
@@ -26,13 +39,13 @@ export default function App() {
   const resetHandler = () => {
     setClicked([]);
     setSolvedIndexes([]);
-    setPrevIndex(null);
+    setCounter(0);
   };
 
   return (
     <View style={styles.container}>
-      <Text>Steps: {clicked.length}</Text>
-      <Text>prevIndex: {prevIndex}</Text>
+      <Text>Steps: {counter}</Text>
+      <Text>clicked: {clicked.join(",")}</Text>
       <View style={styles.buttonRow}>
         <Button title={started ? "Stop" : "Start"} onPress={startHandler} />
         <Button title="Reset" onPress={resetHandler} />
@@ -46,7 +59,14 @@ export default function App() {
                 solvedIndexes.includes(index) && styles.solved,
               ]}
             >
-              <Text style={started && styles.hide}>{values[index]}</Text>
+              <Text
+                style={[
+                  started && styles.hide,
+                  clicked.includes(index) && styles.unhide,
+                ]}
+              >
+                {values[index]}
+              </Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -86,6 +106,9 @@ const styles = StyleSheet.create({
   },
   hide: {
     color: "#fcf",
+  },
+  unhide: {
+    color: "#000",
   },
   solved: {
     backgroundColor: "#aaf",
