@@ -47,7 +47,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Steps: {counter}</Text>
-      <Text>clicked: {clicked.join(",")}</Text>
       <View style={styles.buttonRow}>
         <Button title={started ? "Stop" : "Start"} onPress={startHandler} />
         <Button title="Reset" onPress={resetHandler} />
