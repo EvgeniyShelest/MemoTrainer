@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import generateArray from "./utils/generate-array";
+import GameImage from "./components/GameImage";
 
 let values = generateArray();
 
@@ -43,6 +50,9 @@ export default function App() {
     values = generateArray();
     setStarted(false);
   };
+  const showImage = (index) => {
+    return !started || clicked.includes(index) || solvedIndexes.includes(index);
+  };
 
   return (
     <View style={styles.container}>
@@ -58,20 +68,8 @@ export default function App() {
             key={index}
             onPress={() => handleItemPress(index)}
           >
-            <View
-              style={[
-                styles.cell,
-                solvedIndexes.includes(index) && styles.solved,
-              ]}
-            >
-              <Text
-                style={[
-                  started && styles.hide,
-                  clicked.includes(index) && styles.unhide,
-                ]}
-              >
-                {values[index]}
-              </Text>
+            <View style={styles.cell}>
+              {showImage(index) && <GameImage name={values[index]} />}
             </View>
           </TouchableOpacity>
         ))}
@@ -102,20 +100,11 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   cell: {
-    backgroundColor: "#fcf",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     width: 75,
     height: 75,
     margin: 2,
-  },
-  hide: {
-    color: "#fcf",
-  },
-  unhide: {
-    color: "#000",
-  },
-  solved: {
-    backgroundColor: "#aaf",
   },
 });
